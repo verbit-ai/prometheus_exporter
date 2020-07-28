@@ -70,4 +70,15 @@ class PrometheusExporterMiddlewareTest < Minitest::Test
     refute_nil client.last_send
     assert_nil client.last_send[:queue_time]
   end
+
+  def test_amzn_trace_id
+    now = '1234567890'
+    header 'X-Amzn-Trace-Id', "Root1=1-#{now}-abcdef012345678912345678"
+    get '/'
+    assert last_response.ok?
+
+    refute_nil client.last_send
+    refute_nil client.last_send[:queue_time]
+    assert_in_delta 1, client.last_send[:queue_time], 0.15
+  end
 end

@@ -60,7 +60,7 @@ class PrometheusExporter::Middleware
   # load balancer and starting request in ruby process)
   def measure_queue_time(env)
     start_time = queue_start(env)
-    start_time = queue_start_amzn_trace_id(env) if env['X-Amzn-Trace-Id']
+    start_time = queue_start_amzn_trace_id(env) if env['HTTP_X_AMZN_TRACE_ID']
 
     return unless start_time
 
@@ -83,7 +83,7 @@ class PrometheusExporter::Middleware
 
   # get the content of x-amzn-trace-id header
   def queue_start_amzn_trace_id(env)
-    value = (env['X-Amzn-Trace-Id'].match(/(\w+)=(\d)-(\d+)-(\w+)/) || [])[3].to_i * 1000
+    value = (env['HTTP_X_AMZN_TRACE_ID'].match(/(\w+)=(\d)-(\d+)-(\w+)/) || [])[3].to_i
     return value unless value.nil? || value == ''
   end
 
