@@ -62,6 +62,8 @@ class PrometheusExporter::Middleware
     start_time = queue_start(env)
     start_time = queue_start_amzn_trace_id(env) if env['HTTP_X_AMZN_TRACE_ID']
 
+    puts "request_start=#{request_start}"
+    puts "start_time=#{start_time}"
     return unless start_time
 
     queue_time = request_start.to_f - start_time.to_f
