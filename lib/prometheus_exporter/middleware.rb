@@ -60,6 +60,7 @@ class PrometheusExporter::Middleware
   # load balancer and starting request in ruby process)
   def measure_queue_time(env)
     start_time = queue_start(env)
+    start_time = queue_start_amzn_trace_id(env) if env['X-Amzn-Trace-Id']
 
     return unless start_time
 
@@ -78,6 +79,12 @@ class PrometheusExporter::Middleware
     unless value.nil? || value == ''
       convert_header_to_ms(value.to_s)
     end
+  end
+
+  # get the content of x-amzn-trace-id header
+  def queue_start_amzn_trace_id(env)
+    value = (env['X-Amzn-Trace-Id'].match(/(\w+)=(\d)-(\d+)-(\w+)/) || [])[3].to_i * 1000
+    return value unless value.nil? || value == ''
   end
 
   # nginx returns time as milliseconds with 3 decimal places
