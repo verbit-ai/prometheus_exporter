@@ -83,7 +83,7 @@ class PrometheusExporter::Middleware
 
   # get the content of x-amzn-trace-id header
   def queue_start_amzn_trace_id(env)
-    value = (env['HTTP_X_AMZN_TRACE_ID'].match(/(\w+)=(\d)-(\d+)-(\w+)/) || [])[3].to_i
+    value = (env['HTTP_X_AMZN_TRACE_ID'].match(/(\w+)=(\d)-(\w+)-(\w+)/) || [])[3].to_i(base=16)
     return value unless value.nil? || value == ''
   end
 

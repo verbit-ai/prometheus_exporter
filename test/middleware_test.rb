@@ -72,7 +72,8 @@ class PrometheusExporterMiddlewareTest < Minitest::Test
   end
 
   def test_amzn_trace_id
-    now = '1234567890'
+    # 1234567890 in decimal
+    now = '499602d2'
     header 'X-Amzn-Trace-Id', "Root1=1-#{now}-abcdef012345678912345678"
     get '/'
     assert last_response.ok?
