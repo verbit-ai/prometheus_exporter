@@ -3,7 +3,7 @@
 module PrometheusExporter::Metric
   class Summary < Base
 
-    DEFAULT_QUANTILES = [0.99, 0.9, 0.5, 0.1, 0.01]
+    DEFAULT_QUANTILES = [0.99, 0.95, 0.9, 0.5, 0.1, 0.01]
     ROTATE_AGE = 120
 
     attr_reader :estimators, :count, :total
